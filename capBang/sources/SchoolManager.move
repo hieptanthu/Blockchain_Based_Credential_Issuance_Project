@@ -14,6 +14,8 @@ module my_address::SchoolManager {
  
     const EVENT_SCHOOL_CREATE: u8 = 0;
     const EVENT_SCHOOL_UPDATE: u8 = 1;
+
+    
   
     public struct AdminManager has key, store {
         id: UID,
@@ -93,7 +95,7 @@ module my_address::SchoolManager {
         });
     }
 
-    entry  fun create_admin(admin_manager:&mut AdminManager, new_admin:address, clock: &Clock, _ctx: &mut TxContext) {
+    entry  fun create_admin(admin_manager:&mut AdminManager, new_admin:address, clock: &Clock, _ctx: &mut TxContext)  {
         let sender = tx_context::sender(_ctx);
 
         assert!(admin_manager.super_admin == sender, E_NOT_AUTHORIZED);
@@ -105,6 +107,7 @@ module my_address::SchoolManager {
             event_type:EVENT_ADMIN_CREATE_ADMIN,
             timestamp: clock::timestamp_ms(clock)
         });
+     
     }
 
     entry fun remove_admin(admin_manager: &mut AdminManager,  remote_admin: address, clock: &Clock, _ctx:&mut TxContext) {
@@ -154,7 +157,7 @@ module my_address::SchoolManager {
     }
 
 
-     entry fun update_school(admin_manager: &AdminManager, school: &mut School, new_admin: address, new_code_bytes: vector<u8>,new_ipfs_bytes: vector<u8>, new_status: bool, clock: &Clock, _ctx: &mut TxContext) {
+     entry fun update_school(admin_manager: &AdminManager, school: &mut School, new_code_bytes: vector<u8>, new_admin: address,new_ipfs_bytes: vector<u8>, new_status: bool, clock: &Clock, _ctx: &mut TxContext) {
         let sender = tx_context::sender(_ctx);
         assert!(vec_set::contains(&admin_manager.admins, &sender), E_NOT_AUTHORIZED);
         let mut has_changes = false;
@@ -187,6 +190,8 @@ module my_address::SchoolManager {
             });
         };
     }
+
+
 
 
 }

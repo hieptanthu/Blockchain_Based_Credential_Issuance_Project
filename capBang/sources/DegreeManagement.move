@@ -13,6 +13,7 @@ module my_address::DegreeManagement {
 
     public struct Degree has key, store {
         id: UID,
+        code: u64,
         school_address: address,
         ipfs_url_bytes: vector<u8>,
         status: bool,
@@ -22,6 +23,7 @@ module my_address::DegreeManagement {
 
     public struct DegreeEvent has copy, drop {
         degree_id: address,
+        code: u64,
         school_address: address,
         ipfs_url_bytes: vector<u8>,
         status: bool,
@@ -30,13 +32,14 @@ module my_address::DegreeManagement {
     }
 
 
-    entry fun create_degree(school: &School,ipfs_url_bytes: vector<u8>,clock: &Clock,_ctx: &mut TxContext): (address) {
+    entry fun create_degree(school: &School,code:u64,ipfs_url_bytes: vector<u8>,clock: &Clock,_ctx: &mut TxContext): (DegreeEvent) {
         let sender = tx_context::sender(_ctx);
         let (school_uid_ref, admin_addr) = SchoolManager::get_id_and_admin_schools(school);
         assert!(admin_addr == sender, E_NOT_AUTHORIZED);
 
         let degree = Degree {
             id: object::new(_ctx),
+            code,
             school_address: object::uid_to_address(school_uid_ref),
             ipfs_url_bytes,
             timestamp: clock::timestamp_ms(clock),
@@ -45,57 +48,47 @@ module my_address::DegreeManagement {
 
         let degree_id = object::uid_to_address(&degree.id);
 
-        event::emit(DegreeEvent {
+        let event_out = DegreeEvent {
             degree_id,
+            code,
             school_address: degree.school_address,
             ipfs_url_bytes: degree.ipfs_url_bytes,
             event_type: EVENT_DEGREE_CREATE,
-            status: degree.status,
-            timestamp: degree.timestamp
-        });
+            status: true,
+            timestamp: degree.timestamp,
+        };
+        event::emit(event_out);
 
         transfer::share_object(degree);
-        (degree_id) 
+        (event_out) 
     }
 
 
    
-    entry fun create_multiple_degrees(school: &School, ipfs_urls_bytes: vector<vector<u8>>, clock: &Clock, _ctx: &mut TxContext): vector<address> {  // Sửa thành vector<address>
+    entry fun create_multiple_degrees(school: &School,codes: vector<u64> ,ipfs_urls_bytes: vector<vector<u8>>, clock: &Clock, _ctx: &mut TxContext) { 
         let sender = tx_context::sender(_ctx);
         let (school_uid_ref, admin_addr) = SchoolManager::get_id_and_admin_schools(school);
         assert!(admin_addr == sender, E_NOT_AUTHORIZED);
         let ipfs_len = vector::length(&ipfs_urls_bytes);
-        let mut degree_ids = vector::empty<address>();  
         let school_address= object::uid_to_address(school_uid_ref);
         let mut i = 0;
 
         while (i < ipfs_len) {
             let ipfs_url_bytes = *vector::borrow(&ipfs_urls_bytes, i);
-
+            let code = *vector::borrow(&codes, i);
             let degree = Degree {
                 id: object::new(_ctx),
+                code,
                 school_address:school_address,
                 ipfs_url_bytes,
                 timestamp: clock::timestamp_ms(clock),
                 status: true
             };
 
-            let degree_id = object::uid_to_address(&degree.id);
-
-            event::emit(DegreeEvent {
-                degree_id,
-                school_address: degree.school_address,
-                ipfs_url_bytes: degree.ipfs_url_bytes,
-                event_type: EVENT_DEGREE_CREATE,
-                status: true,
-                timestamp: degree.timestamp,
-            });
-
-            vector::push_back(&mut degree_ids, degree_id);  // Thêm degree_id vào danh sách
             transfer::share_object(degree);
             i = i + 1;
         };
-        degree_ids
+        
     }
 
 
@@ -129,6 +122,7 @@ module my_address::DegreeManagement {
             degree.timestamp = clock::timestamp_ms(clock);
             event::emit(DegreeEvent {
                 degree_id: object::uid_to_address(&degree.id),
+                code:degree.code,
                 school_address: degree.school_address,
                 ipfs_url_bytes: degree.ipfs_url_bytes,
                 event_type: EVENT_DEGREE_UPDATE,
@@ -152,6 +146,7 @@ module my_address::DegreeManagement {
 
         let Degree {
             id,
+            code: _code,
             school_address,
             ipfs_url_bytes,
             timestamp: _,
@@ -162,6 +157,7 @@ module my_address::DegreeManagement {
 
         event::emit(DegreeEvent {
             degree_id,
+            code:_code,
             school_address,
             ipfs_url_bytes,
             event_type: EVENT_DEGREE_DELETE,
