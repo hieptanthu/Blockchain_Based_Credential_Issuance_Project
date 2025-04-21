@@ -2,9 +2,15 @@ const { Router } = require("express");
 const School_Model = require("../models/School");
 const SchoolRouter = Router();
 
-SchoolRouter.get("/", async (req, res, next) => {
+SchoolRouter.post("/search", async (req, res, next) => {
+  console.log("search");
   try {
-    const dataOut = await School_Model.find({});
+    let search = {};
+    if (req.body?.data) {
+      search = req.body.data;
+    }
+
+    const dataOut = await School_Model.find(search);
 
     res.status(200).send(dataOut);
   } catch (error) {
@@ -17,31 +23,13 @@ SchoolRouter.get("/", async (req, res, next) => {
 });
 
 SchoolRouter.post("/", async (req, res, next) => {
-  console.log("post school");
-  console.log("School_Model", School_Model);
-  console.log("req.body", req.body);
-  console.log("req.body.data", req.body.data);
-  const dataOut = await School_Model.create(req.body.data);
-  console.log(dataOut);
-  res.status(200).send({
-    success: true,
-    message: "School successfully create",
-    dataOut,
-  });
   try {
     const {
       body: { data },
     } = req;
 
-    console.log(data);
-
     const dataOut = await School_Model.create(data);
-    console.log(dataOut);
-    res.status(200).send({
-      success: true,
-      message: "School successfully create",
-      dataOut,
-    });
+    res.status(200).send(dataOut);
   } catch (error) {
     res.status(404).send({
       success: false,
@@ -59,11 +47,7 @@ SchoolRouter.put("/:_id", async (req, res, next) => {
 
     const dataOut = await School_Model.findByIdAndUpdate({ _id }, data);
 
-    res.status(200).send({
-      success: true,
-      message: "School successfully  put",
-      dataOut,
-    });
+    res.status(200).send(dataOut);
   } catch (error) {
     res.status(404).send({
       success: false,

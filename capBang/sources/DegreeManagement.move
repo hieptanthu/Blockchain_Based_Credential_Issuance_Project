@@ -6,7 +6,6 @@ module my_address::DegreeManagement {
     use my_address::SchoolManager::{School};
 
     const E_NOT_AUTHORIZED: u64 = 0;
-    const EVENT_DEGREE_CREATE: u64 = 1;
     const EVENT_DEGREE_UPDATE: u64 = 2;
     const EVENT_DEGREE_DELETE: u64 = 3;
 

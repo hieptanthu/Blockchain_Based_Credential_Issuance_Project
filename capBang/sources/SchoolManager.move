@@ -157,7 +157,7 @@ module my_address::SchoolManager {
     }
 
 
-     entry fun update_school(admin_manager: &AdminManager, new_code_bytes: vector<u8>,school: &mut School,  new_admin: address,new_ipfs_bytes: vector<u8>, new_status: bool, clock: &Clock, _ctx: &mut TxContext) {
+     entry fun update_school(admin_manager: &AdminManager, school: &mut School, new_code_bytes: vector<u8>, new_admin: address,new_ipfs_bytes: vector<u8>, new_status: bool, clock: &Clock, _ctx: &mut TxContext) {
         let sender = tx_context::sender(_ctx);
         assert!(vec_set::contains(&admin_manager.admins, &sender), E_NOT_AUTHORIZED);
         let mut has_changes = false;
