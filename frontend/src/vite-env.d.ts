@@ -5,6 +5,7 @@ interface ImportMetaEnv {
   readonly VITE_ADDRESS_ADMIN: string;
   readonly VITE_NETWORK: string;
   readonly VITE_CLOCK_ADDRESS: string;
+  readonly VITE_BACKEND_URL: string;
 }
 
 interface ImportMeta {

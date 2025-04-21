@@ -4,13 +4,15 @@ import {
   useSignAndExecuteTransaction,
   useSuiClient,
 } from "@mysten/dapp-kit";
-import { createApiSchool, updateApiSchool } from "../../api/apiSchool";
 import { ISchool } from "../../types/Ischool";
 import { stringToUint8Array } from "../../tool/stringAndUint8Array";
-
-// import type { SuiObjectData } from "@mysten/sui/client";
+import axiosClient from "../../api/axiosClient";
 import { Transaction } from "@mysten/sui/transactions";
-function modal(props?: ISchool) {
+
+interface ModalSchoolProps {
+  schoolUpdate?: ISchool;
+}
+function ModalSchool({ schoolUpdate }: ModalSchoolProps) {
   const [Loading, setLoading] = useState<number>(0);
   const [typeAction, setTypeAction] = useState<"create" | "update">("create");
   const [school, setSchool] = useState<ISchool>({
@@ -19,11 +21,17 @@ function modal(props?: ISchool) {
     address_school: "",
     address_manager: "",
     ipfs_url: "",
-    status: false,
+    status: true,
     objectId: "",
     digest: "",
     address_user_create: "",
+    updatedAt: "",
   });
+
+  if (schoolUpdate && schoolUpdate._id && !school._id) {
+    setTypeAction("update");
+    setSchool(schoolUpdate);
+  }
 
   const PackageAddress = import.meta.env.VITE_ADDRESS_PACKAGE;
   const ManageAddress = import.meta.env.VITE_ADDRESS_ADMIN;
@@ -70,7 +78,7 @@ function modal(props?: ISchool) {
                 (change: any) => change.type === "created",
               );
               setLoading(50);
-              const ISchool: ISchool = {
+              const SchoolOut: ISchool = {
                 code: school.code,
                 fullname: school.fullname,
                 address_school: school.address_school,
@@ -81,7 +89,7 @@ function modal(props?: ISchool) {
                 digest: tx.digest,
                 address_user_create: currentAccount.address,
               };
-              await createApiSchool(ISchool);
+              await axiosClient.post<ISchool[]>("/school", { data: SchoolOut });
               setLoading(98);
             });
         },
@@ -98,6 +106,11 @@ function modal(props?: ISchool) {
       return;
     }
     if (!school.objectId) {
+      alert("School objectId is undefined");
+      return;
+    }
+
+    if (!school._id) {
       alert("School objectId is undefined");
       return;
     }
@@ -131,7 +144,9 @@ function modal(props?: ISchool) {
             })
             .then(async () => {
               setLoading(50);
-              await updateApiSchool(school);
+              await axiosClient.put<ISchool[]>("/school/" + school._id, {
+                data: school,
+              });
               setLoading(98);
             });
         },
@@ -141,26 +156,28 @@ function modal(props?: ISchool) {
       },
     );
   };
-  function send() {
+
+  async function send() {
     setLoading(10);
+    let flag = false;
     if (typeAction === "create") {
-      AddSchool(school);
+      await AddSchool(school);
+      flag = true;
     } else {
-      updateSchool(school);
+      await updateSchool(school);
+      flag = true;
     }
-    setLoading(100);
+    if (flag) {
+      await setLoading(100);
+    }
   }
 
-  if (props) {
-    setTypeAction("update");
-    setSchool(props);
-  }
   return (
     <div>
       loading: {Loading}
-      <button onClick={send}></button>
+      <button onClick={send}>sdasdasd</button>
     </div>
   );
 }
 
-export default modal;
+export default ModalSchool;

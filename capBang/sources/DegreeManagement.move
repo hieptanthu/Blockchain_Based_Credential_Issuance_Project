@@ -32,7 +32,7 @@ module my_address::DegreeManagement {
     }
 
 
-    entry fun create_degree(school: &School,code:u64,ipfs_url_bytes: vector<u8>,clock: &Clock,_ctx: &mut TxContext): (DegreeEvent) {
+    entry fun create_degree(school: &School,code:u64,ipfs_url_bytes: vector<u8>,clock: &Clock,_ctx: &mut TxContext) {
         let sender = tx_context::sender(_ctx);
         let (school_uid_ref, admin_addr) = SchoolManager::get_id_and_admin_schools(school);
         assert!(admin_addr == sender, E_NOT_AUTHORIZED);
@@ -46,21 +46,10 @@ module my_address::DegreeManagement {
             status: true
         };
 
-        let degree_id = object::uid_to_address(&degree.id);
-
-        let event_out = DegreeEvent {
-            degree_id,
-            code,
-            school_address: degree.school_address,
-            ipfs_url_bytes: degree.ipfs_url_bytes,
-            event_type: EVENT_DEGREE_CREATE,
-            status: true,
-            timestamp: degree.timestamp,
-        };
-        event::emit(event_out);
+    
 
         transfer::share_object(degree);
-        (event_out) 
+      
     }
 
 

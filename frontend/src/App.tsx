@@ -1,11 +1,10 @@
 import { ConnectButton } from "@mysten/dapp-kit";
 import { Box, Container, Flex, Heading } from "@radix-ui/themes";
-
 import { useState } from "react";
 import { useCurrentAccount, useSuiClientQuery } from "@mysten/dapp-kit";
 import { checkAdmin } from "./check/CheckAdmin";
-import { OwnedObjects } from "./OwnedObjects";
 import School from "./Pages/School";
+
 function App() {
   const account = useCurrentAccount();
   const [role, setRole] = useState("");
@@ -46,7 +45,7 @@ function App() {
         <Box>
           <ConnectButton />
         </Box>
-      </Flex>
+      </Flex>{" "}
       <Container>
         <Container
           mt="5"
@@ -54,7 +53,6 @@ function App() {
           px="4"
           style={{ background: "var(--gray-a2)", minHeight: 500 }}
         >
-          <OwnedObjects />
           <School />
         </Container>
       </Container>
