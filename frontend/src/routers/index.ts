@@ -7,7 +7,7 @@ export const path = {
   index: "/",
   ListMySchool: "/ListMySchool/:_id",
   SchoolManager: "/SchoolManager",
-  DegreeManagement: "/DegreeManagement/:_addressSchool",
+  DegreeManagement: "/DegreeManagement/:_school_address",
   Degree: "/Degree/:_addressDegree",
 };
 

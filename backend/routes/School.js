@@ -3,7 +3,6 @@ const School_Model = require("../models/School");
 const SchoolRouter = Router();
 
 SchoolRouter.post("/search", async (req, res, next) => {
-  console.log("search");
   try {
     let search = {};
     if (req.body?.data) {

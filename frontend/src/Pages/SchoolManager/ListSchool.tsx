@@ -4,10 +4,18 @@ import axiosClient from "../../api/axiosClient";
 import { ItemSchool } from "../../components/School";
 import { Loading } from "../../components/Loading";
 import { useParams } from "react-router-dom";
+import { path } from "../../routers";
+import { useNavigate } from "react-router-dom";
 
 function ListMySchool() {
   let { _id } = useParams();
+  const navigate = useNavigate();
   const [schools, setSchools] = useState<ISchool[]>([]);
+  const handleRowClick = (_school_address: string) => {
+    navigate(
+      `${path.DegreeManagement.replace(":_school_address", _school_address)}`,
+    );
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,7 +67,8 @@ function ListMySchool() {
             {schools.map((school, index) => (
               <tr
                 key={index}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                onClick={() => handleRowClick(school.objectId || "")}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
               >
                 <ItemSchool school={school} />
               </tr>

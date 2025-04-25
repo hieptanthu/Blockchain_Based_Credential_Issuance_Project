@@ -1,5 +1,6 @@
 const SchoolRouter = require("./School");
-const allRoutes = [SchoolRouter];
+const DegreeRouter = require("./Degree");
+const allRoutes = [SchoolRouter, DegreeRouter];
 
 const initializeRoutes = (app) => {
   allRoutes.forEach((router) => {

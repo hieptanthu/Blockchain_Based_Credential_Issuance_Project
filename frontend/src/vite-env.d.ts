@@ -6,6 +6,9 @@ interface ImportMetaEnv {
   readonly VITE_NETWORK: string;
   readonly VITE_CLOCK_ADDRESS: string;
   readonly VITE_BACKEND_URL: string;
+  readonly VITE_UPDATE_URL: string;
+  readonly VITE_PINATA_API_KEY: string;
+  readonly VITE_SECRET_PINATA_API_KEY: string;
 }
 
 interface ImportMeta {

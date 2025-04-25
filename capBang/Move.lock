@@ -31,7 +31,7 @@ my_address = "0x0"
 [env]
 
 [env.devnet]
-chain-id = "f4a15ff1"
-original-published-id = "0xd56fe930212d47dc0651d79a9894d03b09f2778e3cd56bb7f137bf8c74839b23"
-latest-published-id = "0xd56fe930212d47dc0651d79a9894d03b09f2778e3cd56bb7f137bf8c74839b23"
+chain-id = "22527cc7"
+original-published-id = "0xeaafe1ea72777b51351ea7d3670178942a9bf129bd2cd2e7f62dd36ff49a9733"
+latest-published-id = "0xeaafe1ea72777b51351ea7d3670178942a9bf129bd2cd2e7f62dd36ff49a9733"
 published-version = "1"

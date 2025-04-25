@@ -1,1 +1,7 @@
 # Blockchain_Based_Credential_Issuance_Project
+
+sui move build
+sui client publish
+
+node address packet and address admin
+0x955cb620f5aa605501e02b0f1a5fcad9d42e8c3be44db7c235f39f5c8c3d4742
