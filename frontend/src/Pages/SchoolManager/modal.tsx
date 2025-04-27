@@ -88,8 +88,11 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                 digest: tx.digest,
                 address_user_create: currentAccount.address,
               };
+              console.log("Created School:", data);
+              console.log("Created School:", SchoolOut);
               await axiosClient.post<ISchool[]>("/school", { data: SchoolOut });
               setLoading(100);
+              onClose;
             });
         },
         onError: (err) => {
@@ -268,7 +271,7 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                 />
                 {school.ipfs_url && (
                   <img
-                    src={school.ipfs_url}
+                    src={import.meta.env.VITE_IPFS_GATEWAY + school.ipfs_url}
                     alt="Uploaded"
                     className="mt-2 w-32 h-32 object-cover"
                     style={{ borderRadius: "8px" }}

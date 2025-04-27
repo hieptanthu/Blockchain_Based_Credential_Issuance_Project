@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const url = import.meta.env.VITE_UPDATE_URL;
 const pinata_api_key = import.meta.env.VITE_PINATA_API_KEY;
 const pinata_secret_api_key = import.meta.env.VITE_SECRET_PINATA_API_KEY;
@@ -20,8 +21,7 @@ const ipfs = {
         },
       });
 
-      const ImgHash = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
-      return ImgHash;
+      return response.data.IpfsHash;
     } catch (error) {
       console.error("Upload to IPFS failed:", error);
       throw error;
@@ -34,45 +34,58 @@ const ipfs = {
       scoreboard: File;
     }[],
   ) => {
-    const uploadPromises = files.map(async (fileData) => {
+    console.log("Uploading files to IPFS...", files);
+    const names = [];
+    const ipfsHashes = [];
+
+    for (const fileData of files) {
       const formData = new FormData();
-      formData.append("file", fileData.imgDegree); // Add imgDegree file
-      formData.append("file", fileData.scoreboard); // Add scoreboard file
+
+      // Đảm bảo mỗi tệp được đưa vào đúng cấu trúc folder
+      formData.append("file", fileData.imgDegree, `${fileData.code}/imgDegree`);
+      formData.append(
+        "file",
+        fileData.scoreboard,
+        `${fileData.code}/scoreboard`,
+      );
 
       try {
         const response = await axios({
           method: "post",
-          url: url,
+          url: url, // URL API của Pinata
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
-            pinata_api_key: pinata_api_key,
-            pinata_secret_api_key: pinata_secret_api_key,
+            pinata_api_key: import.meta.env.VITE_PINATA_API_KEY, // API Key của Pinata
+            pinata_secret_api_key: import.meta.env.VITE_SECRET_PINATA_API_KEY, // Secret API Key của Pinata
           },
         });
 
-        const ImgHash = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+        // Kiểm tra kết quả từ API và lưu trữ thông tin IPFS hash
+        if (response.data && response.data.IpfsHash) {
+          console.log(
+            "Uploaded files for",
+            fileData.code,
+            "to IPFS:",
+            response.data.IpfsHash,
+          );
 
-        // Returning an object containing the name, maHoSo, and the image hash
-        return {
-          code: fileData.code,
-          imgDegreeHash: ImgHash, // Store the imgDegree file IPFS hash
-          scoreboardHash: ImgHash, // Store the scoreboard file IPFS hash (if separate)
-        };
-      } catch (error) {
-        console.error(`Upload for  failed:`, error);
-        throw error;
+          names.push(fileData.code);
+          ipfsHashes.push(response.data.IpfsHash);
+        } else {
+          console.error(`Error: No IpfsHash returned for ${fileData.code}`);
+          throw new Error(`No IpfsHash returned for ${fileData.code}`);
+        }
+      } catch (error: any) {
+        console.error(
+          `Upload for ${fileData.code} failed:`,
+          error.response ? error.response.data : error.message,
+        );
+        throw error; // Nếu một file thất bại, dừng luôn
       }
-    });
-
-    try {
-      const uploadResults = await Promise.all(uploadPromises);
-      return uploadResults; // Return an array of results
-    } catch (error) {
-      console.error("One or more uploads failed:", error);
-      throw error;
     }
+
+    return { names, ipfsHashes };
   },
 };
-
 export default ipfs;

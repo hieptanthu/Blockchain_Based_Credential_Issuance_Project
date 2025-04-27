@@ -10,22 +10,22 @@ function Layout() {
   const account = useCurrentAccount();
   const [role, setRole] = useState("");
 
-  // const { data } = useSuiClientQuery("getObject", {
-  //   id: import.meta.env.VITE_ADDRESS_ADMIN,
-  //   options: {
-  //     showContent: true,
-  //   },
-  // }) as any;
+  const { data } = useSuiClientQuery("getObject", {
+    id: import.meta.env.VITE_ADDRESS_ADMIN,
+    options: {
+      showContent: true,
+    },
+  }) as any;
 
-  // if (!data) {
-  //   return;
-  // }
+  if (!data) {
+    return;
+  }
 
-  // if (data && account && role === "") {
-  //   const superAdmin = data.data?.content?.fields?.super_admin;
-  //   const admins = data.data?.content?.fields?.admins?.fields?.contents;
-  //   setRole(checkAdmin(account?.address, superAdmin, admins));
-  // }
+  if (data && account && role === "") {
+    const superAdmin = data.data?.content?.fields?.super_admin;
+    const admins = data.data?.content?.fields?.admins?.fields?.contents;
+    setRole(checkAdmin(account?.address, superAdmin, admins));
+  }
 
   return (
     <>

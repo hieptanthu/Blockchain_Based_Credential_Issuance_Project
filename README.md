@@ -14,8 +14,8 @@ sui client call \
  --gas-budget 100000000
 
 sui client call \
- --package 0x5a0cce620a35810ceece5029ab5b0af7d1699d27cb7767f0a6556ce340f3b866 \
+ --package 0xc8af585b37853e5131658729fafe52e43cc48a1006a6fc62e2e10723b2897a17 \
  --module SchoolManager \
  --function create_admin \
- --args 0xb382e4f8b79d3bd8ed31aa765197f21bf7cf677484d9c11340ef4cec50527b00 0x7f336f529db9d040e6f74c89671c25eec920fb39c9b50dbc71a5e35bc63d489d 0x6 \
+ --args 0x2ceeaaa5ae7e4adc215a265b92badea58db649b9d808cfc3ac37e80759934295 0x7f336f529db9d040e6f74c89671c25eec920fb39c9b50dbc71a5e35bc63d489d 0x6 \
  --gas-budget 100000000
