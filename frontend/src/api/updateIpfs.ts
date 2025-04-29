@@ -35,7 +35,7 @@ const ipfs = {
     }[],
   ) => {
     console.log("Uploading files to IPFS...", files);
-    const names = [];
+    const codes = [];
     const ipfsHashes = [];
 
     for (const fileData of files) {
@@ -70,7 +70,7 @@ const ipfs = {
             response.data.IpfsHash,
           );
 
-          names.push(fileData.code);
+          codes.push(fileData.code);
           ipfsHashes.push(response.data.IpfsHash);
         } else {
           console.error(`Error: No IpfsHash returned for ${fileData.code}`);
@@ -85,7 +85,7 @@ const ipfs = {
       }
     }
 
-    return { names, ipfsHashes };
+    return { codes, ipfsHashes };
   },
 };
 export default ipfs;

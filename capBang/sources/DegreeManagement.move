@@ -60,7 +60,6 @@ module my_address::DegreeManagement {
         let ipfs_len = vector::length(&ipfs_urls_bytes);
         let school_address= object::uid_to_address(school_uid_ref);
         let mut i = 0;
-
         while (i < ipfs_len) {
             let ipfs_url_bytes = *vector::borrow(&ipfs_urls_bytes, i);
             let code = *vector::borrow(&codes, i);

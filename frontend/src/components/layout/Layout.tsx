@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 function Layout() {
   const account = useCurrentAccount();
   const [role, setRole] = useState("");
-
   const { data } = useSuiClientQuery("getObject", {
     id: import.meta.env.VITE_ADDRESS_ADMIN,
     options: {
@@ -39,7 +38,9 @@ function Layout() {
         }}
       >
         <Box className="flex items-center">
-          <Heading>Hello {role}</Heading>
+          <Link to="/">
+            <Heading>UTEHY {role}</Heading>
+          </Link>
         </Box>
         {role === "Admin" && (
           <Box className="flex items-center h-auto m-auto content-center">
@@ -47,13 +48,15 @@ function Layout() {
           </Box>
         )}
 
-        <Box className="flex items-center h-auto m-auto content-center">
-          <Link
-            to={`${path.ListMySchool.replace(":_id", account?.address || "")}`}
-          >
-            My School Manager
-          </Link>
-        </Box>
+        {account != null && (
+          <Box className="flex items-center h-auto m-auto content-center">
+            <Link
+              to={`${path.ListMySchool.replace(":_id", account?.address || "")}`}
+            >
+              My School Manager
+            </Link>
+          </Box>
+        )}
 
         <Box>
           <ConnectButton />

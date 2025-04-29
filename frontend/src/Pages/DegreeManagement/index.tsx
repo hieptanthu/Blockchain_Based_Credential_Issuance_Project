@@ -29,18 +29,19 @@ function DegreeManagement() {
     };
 
     fetchData();
-  }, []);
+  }, [showModalUpdate, showModalCreate]);
 
   return (
     <>
-      {showModalCreate && (
+      {showModalCreate && _school_address && (
         <ModalCreateDegree
+          address_school={_school_address}
           onClose={() => {
             setShowModalCreate(false);
           }}
         />
       )}
-      {showModalUpdate && (
+      {showModalUpdate && degree && (
         <ModalUpdateDegree
           degree={degree}
           onClose={() => {
@@ -50,7 +51,10 @@ function DegreeManagement() {
       )}
       <div className="flex items-center justify-between pb-4">
         <h1>List Schools </h1>
-        <button onClick={() => setShowModalCreate(!showModalCreate)}>
+        <button
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          onClick={() => setShowModalCreate(!showModalCreate)}
+        >
           create
         </button>
       </div>
@@ -61,9 +65,6 @@ function DegreeManagement() {
             <tr>
               <th scope="col" className="px-6 py-3">
                 Code
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Image
               </th>
               <th scope="col" className="px-6 py-3">
                 Status
@@ -78,15 +79,16 @@ function DegreeManagement() {
               <tr
                 key={index}
                 onClick={() => {
-                  setShowModalUpdate(true);
+                  setShowModalUpdate(!showModalUpdate);
                   setDegree(degree);
                 }}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
               >
                 <td className="px-6 py-4">{degree.code}</td>
-                <td className="px-6 py-4">{degree.ipfs_url_bytes}</td>
-                <td className="px-6 py-4">{degree.status}</td>
-                <td className="px-6 py-4">{degree.timestamp}</td>
+                <td className="px-6 py-4">
+                  {degree.status ? "open" : "clone"}
+                </td>
+                <td className="px-6 py-4">{degree.createdAt}</td>
               </tr>
             ))}
           </tbody>

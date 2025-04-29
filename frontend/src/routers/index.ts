@@ -8,7 +8,7 @@ export const path = {
   ListMySchool: "/ListMySchool/:_id",
   SchoolManager: "/SchoolManager",
   DegreeManagement: "/DegreeManagement/:_school_address",
-  Degree: "/Degree/:_addressDegree",
+  Degree: "/Degree/:ojbID",
 };
 
 const routers = [

@@ -10,6 +10,7 @@ interface ImportMetaEnv {
   readonly VITE_PINATA_API_KEY: string;
   readonly VITE_SECRET_PINATA_API_KEY: string;
   readonly VITE_IPFS_GATEWAY: string;
+  readonly VITE_CLIENT_URL: string;
 }
 
 interface ImportMeta {
