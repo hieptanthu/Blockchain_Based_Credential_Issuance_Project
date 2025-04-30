@@ -6,9 +6,8 @@ function Degree() {
   let { ojbID } = useParams();
   const navigate = useNavigate();
   if (!ojbID) {
-    alert("No Object ID provided. Redirecting...");
-    navigate("/"); // Ví dụ: chuyển về trang chủ
-    return null; // Dừng render component nếu không có ojbID
+    navigate("/");
+    return null;
   }
   const { data } = useSuiClientQuery("getObject", {
     id: ojbID,
@@ -23,9 +22,10 @@ function Degree() {
       showContent: true,
     },
   }) as any;
-  console.log(School?.data?.data?.content?.fields);
 
-  console.log(data?.data?.content?.fields);
+  if (!data?.data) {
+    navigate("/");
+  }
 
   return (
     <>

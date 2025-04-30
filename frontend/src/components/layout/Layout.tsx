@@ -6,6 +6,7 @@ import { checkAdmin } from "../../check/CheckAdmin";
 import { Outlet } from "react-router-dom";
 import { path } from "../../routers";
 import { Link } from "react-router-dom";
+import starImage from "../../assets/image/download.png";
 function Layout() {
   const account = useCurrentAccount();
   const [role, setRole] = useState("");
@@ -28,6 +29,14 @@ function Layout() {
 
   return (
     <>
+      <div
+        className={
+          "fixed top-0 left-0 w-screen h-screen  bg-cover bg-repeat animate-starMove z-[-1]"
+        }
+        style={{
+          backgroundImage: `url(${starImage})`,
+        }}
+      ></div>
       <Flex
         position="sticky"
         px="4"
@@ -62,15 +71,8 @@ function Layout() {
           <ConnectButton />
         </Box>
       </Flex>{" "}
-      <Container>
-        <Container
-          mt="5"
-          pt="2"
-          px="4"
-          style={{ background: "var(--gray-a2)", minHeight: 500 }}
-        >
-          <Outlet />
-        </Container>
+      <Container className="h-auto">
+        <Outlet />
       </Container>
     </>
   );

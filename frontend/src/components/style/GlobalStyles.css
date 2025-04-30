@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@keyframes starMove {
+  0% {
+    background-position: 1000% 1000%;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.animate-starMove {
+  animation: starMove 60s linear infinite;
+}
