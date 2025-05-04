@@ -1,4 +1,4 @@
-import { data, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IDegree } from "../../types/IDeree";
 import { useState, useEffect } from "react";
 import axiosClient from "../../api/axiosClient";

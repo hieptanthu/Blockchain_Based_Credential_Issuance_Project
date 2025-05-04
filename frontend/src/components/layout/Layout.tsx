@@ -7,7 +7,9 @@ import { Outlet } from "react-router-dom";
 import { path } from "../../routers";
 import { Link } from "react-router-dom";
 import starImage from "../../assets/image/download.png";
+import { useTranslation } from "react-i18next";
 function Layout() {
+  const { i18n } = useTranslation();
   const account = useCurrentAccount();
   const [role, setRole] = useState("");
   const { data } = useSuiClientQuery("getObject", {
@@ -48,7 +50,7 @@ function Layout() {
       >
         <Box className="flex items-center">
           <Link to="/">
-            <Heading>UTEHY {role}</Heading>
+            <Heading>Degree Chain {role}</Heading>
           </Link>
         </Box>
         {role === "Admin" && (
@@ -66,12 +68,16 @@ function Layout() {
             </Link>
           </Box>
         )}
+        <Box>
+          <button onClick={() => i18n.changeLanguage("vi")}>Tiếng Việt</button>
+          <button onClick={() => i18n.changeLanguage("en")}>English</button>
+        </Box>
 
         <Box>
           <ConnectButton />
         </Box>
       </Flex>{" "}
-      <Container className="h-auto">
+      <Container className="h-auto m-[10px]">
         <Outlet />
       </Container>
     </>

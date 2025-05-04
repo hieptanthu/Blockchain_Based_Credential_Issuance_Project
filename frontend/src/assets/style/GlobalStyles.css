@@ -2,10 +2,10 @@
 
 @keyframes starMove {
   0% {
-    background-position: 1000% 1000%;
+    background-position: 0% 0%;
   }
   100% {
-    background-position: 0 0;
+    background-position: 1000% 1000%;
   }
 }
 
