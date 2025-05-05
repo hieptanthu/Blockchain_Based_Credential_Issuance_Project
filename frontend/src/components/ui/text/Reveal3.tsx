@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
 import { motion, useScroll } from "framer-motion";
+interface Props {
+  children: any;
+}
 
-const Reveal3 = ({ children, className }) => {
+const Reveal3 = ({ children }: Props) => {
   const element = useRef(null);
   const { scrollYProgress } = useScroll({
     target: element,
@@ -19,7 +22,7 @@ const Reveal3 = ({ children, className }) => {
       style={{ opacity: scrollYProgress }}
       className={`flex flex-wrap`}
     >
-      {words.map((word, i) => (
+      {words.map((word: any, i: any) => (
         <Word key={i}>{word}</Word>
       ))}
     </motion.span>
@@ -28,10 +31,6 @@ const Reveal3 = ({ children, className }) => {
 export default Reveal3;
 
 // WORD COMPONENT
-const Word = ({ children }) => {
-  return (
-    <span className="mr-1">
-      {children}
-    </span>
-  );
+const Word = ({ children }: Props) => {
+  return <span className="mr-1">{children}</span>;
 };
