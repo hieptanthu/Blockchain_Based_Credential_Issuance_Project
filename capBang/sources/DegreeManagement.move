@@ -8,6 +8,7 @@ module my_address::DegreeManagement {
     const E_NOT_AUTHORIZED: u64 = 0;
     const EVENT_DEGREE_UPDATE: u64 = 2;
     const EVENT_DEGREE_DELETE: u64 = 3;
+    const E_SCHOOL_INACTIVE: u64 = 7;
 
 
     public struct Degree has key, store {
@@ -33,8 +34,9 @@ module my_address::DegreeManagement {
 
     entry fun create_degree(school: &School,code:u64,ipfs_url_bytes: vector<u8>,clock: &Clock,_ctx: &mut TxContext) {
         let sender = tx_context::sender(_ctx);
-        let (school_uid_ref, admin_addr) = SchoolManager::get_id_and_admin_schools(school);
+        let (school_uid_ref, admin_addr,admin_status) = SchoolManager::get_id_and_admin_schools(school);
         assert!(admin_addr == sender, E_NOT_AUTHORIZED);
+        assert!(admin_status, E_SCHOOL_INACTIVE);
 
         let degree = Degree {
             id: object::new(_ctx),
@@ -55,8 +57,9 @@ module my_address::DegreeManagement {
    
     entry fun create_multiple_degrees(school: &School,codes: vector<u64> ,ipfs_urls_bytes: vector<vector<u8>>, clock: &Clock, _ctx: &mut TxContext) { 
         let sender = tx_context::sender(_ctx);
-        let (school_uid_ref, admin_addr) = SchoolManager::get_id_and_admin_schools(school);
+        let (school_uid_ref, admin_addr,admin_status) = SchoolManager::get_id_and_admin_schools(school);
         assert!(admin_addr == sender, E_NOT_AUTHORIZED);
+        assert!(admin_status, E_SCHOOL_INACTIVE);
         let ipfs_len = vector::length(&ipfs_urls_bytes);
         let school_address= object::uid_to_address(school_uid_ref);
         let mut i = 0;
@@ -89,10 +92,10 @@ module my_address::DegreeManagement {
     ) {
         let sender = tx_context::sender(_ctx);
     
-        let (_, admin_addr) = SchoolManager::get_id_and_admin_schools(school);
+        let (_, admin_addr,admin_status) = SchoolManager::get_id_and_admin_schools(school);
 
         assert!(admin_addr == sender, E_NOT_AUTHORIZED);
-
+        assert!(admin_status, E_SCHOOL_INACTIVE);
         let mut has_changes = false;
 
         if (degree.ipfs_url_bytes != new_ipfs_url_bytes) {
@@ -127,9 +130,10 @@ module my_address::DegreeManagement {
     ) {
         let sender = tx_context::sender(_ctx);
         
-        let (_, admin_addr) = SchoolManager::get_id_and_admin_schools(school);
-        assert!(admin_addr == sender, E_NOT_AUTHORIZED);
+        let (_, admin_addr, admin_status) = SchoolManager::get_id_and_admin_schools(school);
 
+        assert!(admin_addr == sender, E_NOT_AUTHORIZED);
+        assert!(admin_status, E_SCHOOL_INACTIVE);
 
         let Degree {
             id,

@@ -1,10 +1,12 @@
 import { ISchool } from "../../types/Ischool";
+import { useTranslation } from "react-i18next";
 
 interface ISchoolProps {
   school: ISchool;
 }
 
 export function ItemSchool({ school }: ISchoolProps) {
+  const { t } = useTranslation();
   return (
     <>
       <th
@@ -23,7 +25,7 @@ export function ItemSchool({ school }: ISchoolProps) {
         />
       </td>
       <td className="px-6 py-4"> {school.address_school}</td>
-      <td className="px-6 py-4"> {school.status ? "True" : "False"}</td>
+      <td className="px-6 py-4"> {school.status ? t("open") : t("clone")}</td>
     </>
   );
 }

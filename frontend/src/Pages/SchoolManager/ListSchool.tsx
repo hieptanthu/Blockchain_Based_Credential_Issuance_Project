@@ -6,11 +6,13 @@ import { Loading } from "../../components/Loading";
 import { useParams } from "react-router-dom";
 import { path } from "../../routers";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function ListMySchool() {
+  const { t } = useTranslation();
   let { _id } = useParams();
   const navigate = useNavigate();
-  const [schools, setSchools] = useState<ISchool[]>([]);
+  const [schools, setSchools] = useState<ISchool[] | undefined>(undefined);
   const handleRowClick = (_school_address: string) => {
     navigate(
       `${path.DegreeManagement.replace(":_school_address", _school_address)}`,
@@ -25,6 +27,7 @@ function ListMySchool() {
           },
         });
         if (Array.isArray(data)) {
+          console.log(data);
           setSchools(data);
         }
       } catch (error) {
@@ -33,33 +36,33 @@ function ListMySchool() {
     };
 
     fetchData();
-  }, []);
-  if (schools.length === 0) {
+  }, [_id]);
+  if (!schools) {
     return <Loading />;
   }
   return (
     <div>
       <div className="flex items-center justify-between pb-4">
-        <h1>My Schools </h1>
+        <h1>{t("my_schools")} </h1>
       </div>
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Full Name
+                {t("full_name")}
               </th>
               <th scope="col" className="px-6 py-3">
-                Code
+                {t("code")}
               </th>
               <th scope="col" className="px-6 py-3">
                 Logo
               </th>
               <th scope="col" className="px-6 py-3">
-                Address
+                {t("address")}
               </th>
               <th scope="col" className="px-6 py-3">
-                Status
+                {t("status")}
               </th>
             </tr>
           </thead>

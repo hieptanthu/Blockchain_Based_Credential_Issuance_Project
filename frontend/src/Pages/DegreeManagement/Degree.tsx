@@ -1,8 +1,10 @@
 import { useSuiClientQuery } from "@mysten/dapp-kit";
 import { uint8ArrayToString } from "../../tool/stringAndUint8Array";
+import { useTranslation } from "react-i18next";
 
 import { useParams, useNavigate } from "react-router-dom";
 function Degree() {
+  const { t } = useTranslation();
   let { ojbID } = useParams();
   const navigate = useNavigate();
   if (!ojbID) {
@@ -33,7 +35,7 @@ function Degree() {
         <div className="flex justify-around h-14 items-center ">
           <div>
             <h1 className="content-center">
-              Code :{data?.data?.content?.fields.code}
+              {t("code")} :{data?.data?.content?.fields.code}
             </h1>
           </div>
           <div className="flex m-2.5">

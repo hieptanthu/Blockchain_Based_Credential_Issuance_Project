@@ -3,9 +3,13 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../api/axiosClient";
 import ModalSchool from "./modal";
 import { ItemSchool } from "../../components/School";
+import { useTranslation } from "react-i18next";
+import { Loading } from "../../components/Loading";
 
 function SchoolManager() {
-  const [schools, setSchools] = useState<ISchool[]>([]);
+  const { t } = useTranslation();
+
+  const [schools, setSchools] = useState<ISchool[] | undefined>(undefined);
   const [school, setSchool] = useState<ISchool | undefined>(undefined);
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
@@ -13,7 +17,6 @@ function SchoolManager() {
       try {
         const data = await axiosClient.post<ISchool[]>("/school/search", {});
         if (Array.isArray(data)) {
-          data[0].status = !data[0].status;
           setSchools(data);
         }
       } catch (error) {
@@ -23,8 +26,8 @@ function SchoolManager() {
 
     fetchData();
   }, []);
-  if (schools.length === 0) {
-    return <div>Loading...</div>;
+  if (!schools) {
+    return <Loading />;
   }
   return (
     <div>
@@ -35,7 +38,7 @@ function SchoolManager() {
         />
       )}
       <div className="flex items-center justify-between pb-4">
-        <h1>List Schools </h1>
+        <h1>{t("list_schools")} </h1>
         <button
           data-modal-hide="default-modal"
           type="button"
@@ -45,7 +48,7 @@ function SchoolManager() {
             setSchool(undefined);
           }}
         >
-          create
+          {t("create")}
         </button>
       </div>
 
@@ -54,35 +57,43 @@ function SchoolManager() {
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Full Name
+                {t("full_name")}
               </th>
               <th scope="col" className="px-6 py-3">
-                Code
+                {t("code")}
               </th>
               <th scope="col" className="px-6 py-3">
                 Logo
               </th>
               <th scope="col" className="px-6 py-3">
-                Address
+                {t("address")}
               </th>
               <th scope="col" className="px-6 py-3">
-                Status
+                {t("status")}
               </th>
             </tr>
           </thead>
           <tbody>
-            {schools.map((school, index) => (
-              <tr
-                key={index}
-                onClick={() => {
-                  setShowModal(true);
-                  setSchool(school);
-                }}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
-              >
-                <ItemSchool school={school} />
+            {Array.isArray(schools) && (schools as ISchool[])?.length > 0 ? (
+              (schools as ISchool[]).map((school: any, index: any) => (
+                <tr
+                  key={index}
+                  onClick={() => {
+                    setShowModal(true);
+                    setSchool(school);
+                  }}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                >
+                  <ItemSchool school={school} />
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td className="text-center py-4 text-gray-500">
+                  {t("school.no_school_found") || "No school found"}
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

@@ -3,8 +3,10 @@ import { IDegree } from "../../types/IDeree";
 import { useState, useEffect } from "react";
 import axiosClient from "../../api/axiosClient";
 import { ModalCreateDegree, ModalUpdateDegree } from "./modal";
+import { useTranslation } from "react-i18next";
 
 function DegreeManagement() {
+  const { t } = useTranslation();
   let { _school_address } = useParams();
   const [degrees, setDegrees] = useState<IDegree[]>([]);
   const [degree, setDegree] = useState<IDegree | undefined>(undefined);
@@ -50,12 +52,12 @@ function DegreeManagement() {
         />
       )}
       <div className="flex items-center justify-between pb-4">
-        <h1>List Schools </h1>
+        <h1>{t("list_schools")} </h1>
         <button
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           onClick={() => setShowModalCreate(!showModalCreate)}
         >
-          create
+          {t("create")}
         </button>
       </div>
 
@@ -64,13 +66,13 @@ function DegreeManagement() {
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Code
+                {t("code")}
               </th>
               <th scope="col" className="px-6 py-3">
-                Status
+                {t("status")}
               </th>
               <th scope="col" className="px-6 py-3">
-                Timestamp
+                {t("timestamp")}
               </th>
             </tr>
           </thead>
@@ -86,7 +88,7 @@ function DegreeManagement() {
               >
                 <td className="px-6 py-4">{degree.code}</td>
                 <td className="px-6 py-4">
-                  {degree.status ? "open" : "clone"}
+                  {degree.status ? t("open") : t("clone")}
                 </td>
                 <td className="px-6 py-4">{degree.createdAt}</td>
               </tr>

@@ -12,3 +12,12 @@
 .animate-starMove {
   animation: starMove 60s linear infinite;
 }
+
+.glow-animation {
+  text-shadow:
+    0 0 10px #3d3a3a,
+    0 0 20px #fff,
+    0 0 30px #fff,
+    0 0 40px #fff,
+    0 0 50px #fff;
+}

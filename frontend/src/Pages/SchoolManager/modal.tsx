@@ -10,12 +10,14 @@ import { stringToUint8Array } from "../../tool/stringAndUint8Array";
 import axiosClient from "../../api/axiosClient";
 import { Transaction } from "@mysten/sui/transactions";
 import ipfs from "../../api/updateIpfs";
-
+import { useTranslation } from "react-i18next";
 interface ModalSchoolProps {
   schoolUpdate?: ISchool;
   onClose?: () => void;
 }
+
 function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState<number>(0);
   const [typeAction, setTypeAction] = useState<"create" | "update">("create");
   const [school, setSchool] = useState<ISchool>({
@@ -171,7 +173,6 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
 
   if (loading === 100) {
     setLoading(0);
-    onClose && onClose();
   }
 
   if (loading > 0) {
@@ -194,7 +195,7 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
             {/* Modal header */}
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                {typeAction === "create" ? "Create School" : "Update School"}
+                {typeAction === "create" ? t("create") : t("update")}
               </h3>
               <button
                 type="button"
@@ -227,13 +228,13 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                   htmlFor="code"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Code
+                  {t("code")}
                 </label>
                 <input
                   type="text"
                   id="code"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  placeholder="Code"
+                  placeholder={t("code")}
                   value={school.code}
                   onChange={(e) => {
                     setSchool({ ...school, code: e.target.value });
@@ -246,7 +247,7 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                   htmlFor="file"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Upload Image
+                  {t("upload_Image")}
                 </label>
                 <input
                   type="file"
@@ -283,13 +284,13 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                   htmlFor="fullname"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Fullname
+                  {t("full_name")}
                 </label>
                 <input
                   type="text"
                   id="fullname"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  placeholder="Fullname"
+                  placeholder={t("full_name")}
                   value={school.fullname}
                   onChange={(e) => {
                     setSchool({ ...school, fullname: e.target.value });
@@ -301,13 +302,13 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                   htmlFor="fullname"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Address School
+                  {t("address_schools")}
                 </label>
                 <input
                   type="text"
                   id="address_school"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  placeholder="address_school"
+                  placeholder={t("address_schools")}
                   value={school.address_school}
                   onChange={(e) => {
                     setSchool({ ...school, address_school: e.target.value });
@@ -319,13 +320,13 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                   htmlFor="address_manager"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Address Manager
+                  {t("address_manager")}
                 </label>
                 <input
                   type="text"
                   id="address_manager"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  placeholder="Address Manager"
+                  placeholder={t("address_manager")}
                   value={school.address_manager}
                   onChange={(e) => {
                     setSchool({
@@ -350,7 +351,7 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                   htmlFor="bordered-checkbox-2"
                   className="w-full py-4 ms-2 m-3.5 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
-                  status
+                  {t("status")}
                 </label>
               </div>
             </div>
@@ -362,7 +363,7 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                 className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 onClick={onClose}
               >
-                Close
+                {t("close")}
               </button>
               <button
                 onClick={send}
@@ -370,7 +371,7 @@ function ModalSchool({ schoolUpdate, onClose }: ModalSchoolProps) {
                 type="button"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                {typeAction === "create" ? "Create" : "Update"}
+                {typeAction === "create" ? t("create") : t("update")}
               </button>
             </div>
           </div>

@@ -1,14 +1,12 @@
 import { motion } from "framer-motion";
-import React from "react";
 
 const DURATION = 0.25;
 const STAGGER = 0.025;
-
-interface FlipProps {
-  children: string;
+interface Props {
+  children: any;
 }
 
-const Flip: React.FC<FlipProps> = ({ children }) => {
+const Flip = ({ children }: Props) => {
   return (
     <motion.div
       initial="initial"
@@ -17,9 +15,9 @@ const Flip: React.FC<FlipProps> = ({ children }) => {
       style={{ lineHeight: 0.85 }}
     >
       <div>
-        {children.split("").map((l, i) => (
+        {children.split("").map((l: any, i: any) => (
           <motion.span
-            key={`top-${i}`}
+            key={i}
             className="inline-block"
             variants={{
               initial: { y: 0 },
@@ -37,9 +35,9 @@ const Flip: React.FC<FlipProps> = ({ children }) => {
       </div>
 
       <div className="absolute inset-0">
-        {children.split("").map((l, i) => (
+        {children.split("").map((l: any, i: any) => (
           <motion.span
-            key={`bottom-${i}`}
+            key={i}
             className="inline-block"
             variants={{
               initial: { y: "100%" },
@@ -58,5 +56,4 @@ const Flip: React.FC<FlipProps> = ({ children }) => {
     </motion.div>
   );
 };
-
 export default Flip;

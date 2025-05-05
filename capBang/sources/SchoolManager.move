@@ -77,8 +77,8 @@ module my_address::SchoolManager {
     }
 
 
-    public fun get_id_and_admin_schools(s: &School): (&UID, address) {
-        (&s.id, s.admin)
+    public fun get_id_and_admin_schools(s: &School): (&UID, address,bool) {
+        (&s.id, s.admin,s.status)
     }
 
 

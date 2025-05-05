@@ -2,6 +2,7 @@ import { IDegree } from "../../types/IDeree";
 import { useState, useEffect } from "react";
 import ipfs from "../../api/updateIpfs";
 import { path } from "../../routers";
+import { useTranslation } from "react-i18next";
 import {
   useCurrentAccount,
   useSignAndExecuteTransaction,
@@ -37,6 +38,7 @@ interface DegreeData {
 }
 
 export function ModalCreateDegree(props: ModalCreateDegreeProps) {
+  const { t } = useTranslation();
   const [fileDegrees, setFileDegrees] = useState<File[]>([]);
   const [fileScoreboard, setFileScoreboard] = useState<File[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -45,7 +47,8 @@ export function ModalCreateDegree(props: ModalCreateDegreeProps) {
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
 
   const isImageFile = (file: File) => /\.(jpg|jpeg|png)$/i.test(file.name);
-  const isDocumentFile = (file: File) => /\.(doc|docx|pdf)$/i.test(file.name);
+  const isDocumentFile = (file: File) =>
+    /\.(doc|docx|pdf|jpg|jpeg|png)$/i.test(file.name);
 
   const handleFilesChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -230,7 +233,7 @@ export function ModalCreateDegree(props: ModalCreateDegreeProps) {
             {/* Modal header */}
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Create
+                {t("create_degree")}
               </h3>
               <button
                 type="button"
@@ -253,7 +256,7 @@ export function ModalCreateDegree(props: ModalCreateDegreeProps) {
                     d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                   />
                 </svg>
-                <span className="sr-only">Close modal</span>
+                <span className="sr-only">{t("close")}</span>
               </button>
             </div>
             <div className="p-4 md:p-5 space-y-4">
@@ -262,7 +265,7 @@ export function ModalCreateDegree(props: ModalCreateDegreeProps) {
                   htmlFor="degrees"
                   className="block mb-2 text-sm font-medium"
                 >
-                  File Degrees (Ảnh)
+                  {t("file_degrees")}
                 </label>
                 <input
                   type="file"
@@ -278,7 +281,7 @@ export function ModalCreateDegree(props: ModalCreateDegreeProps) {
                   htmlFor="scoreboard"
                   className="block mb-2 text-sm font-medium "
                 >
-                  File Scoreboard (Tài liệu)
+                  {t("file_scoreboard")}
                 </label>
                 <input
                   type="file"
@@ -291,13 +294,16 @@ export function ModalCreateDegree(props: ModalCreateDegreeProps) {
               {isFullyMatched && (
                 <div>
                   <h3 className="font-semibold mb-2 text-green-600">
-                    Danh sách ghép đúng:
+                    {t("list_Degrees_Scoreboard")}
                   </h3>
                   <ul className="list-disc pl-5">
                     {matchedFiles.map((item, idx) => (
                       <li className=" text-gray-900" key={idx}>
-                        <strong>{item.name}</strong>: Degree ={" "}
-                        {item.degree.name}, Scoreboard = {item.scoreboard.name}
+                        <strong>
+                          {t("profile_code")}:{item.name}
+                        </strong>
+                        ,{t("degree")} : {item.degree.name},{t("scoreboard")} :
+                        {item.scoreboard.name}
                       </li>
                     ))}
                   </ul>
@@ -308,8 +314,7 @@ export function ModalCreateDegree(props: ModalCreateDegreeProps) {
               {!isFullyMatched &&
                 (fileDegrees.length > 0 || fileScoreboard.length > 0) && (
                   <div className="mt-4 text-red-600 font-medium">
-                    ❌ Các file không khớp hoàn toàn — hãy đảm bảo tất cả tên
-                    file (không đuôi) phải giống nhau và đúng loại!
+                    {t("degree_err")}
                   </div>
                 )}
             </div>
@@ -320,7 +325,7 @@ export function ModalCreateDegree(props: ModalCreateDegreeProps) {
                 className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 onClick={props.onClose}
               >
-                Close
+                {t("close")}
               </button>
               <button
                 onClick={handleSubmit}
@@ -329,7 +334,7 @@ export function ModalCreateDegree(props: ModalCreateDegreeProps) {
                 disabled={!isFullyMatched}
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                Create
+                {t("create")}
               </button>
             </div>
           </div>
@@ -345,6 +350,7 @@ interface ModalUpdateDegreeProps {
 }
 
 export function ModalUpdateDegree(props: ModalUpdateDegreeProps) {
+  const { t } = useTranslation();
   const suiClient = useSuiClient();
   const [loading, setLoading] = useState<boolean>(true);
   const currentAccount = useCurrentAccount();
@@ -429,7 +435,7 @@ export function ModalUpdateDegree(props: ModalUpdateDegreeProps) {
             {/* Modal header */}
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Update
+                {t("update")}
               </h3>
               <button
                 type="button"
@@ -452,7 +458,7 @@ export function ModalUpdateDegree(props: ModalUpdateDegreeProps) {
                     d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                   />
                 </svg>
-                <span className="sr-only">Close modal</span>
+                <span className="sr-only">{t("close")}</span>
               </button>
             </div>
             {/* Modal body */}
@@ -462,7 +468,7 @@ export function ModalUpdateDegree(props: ModalUpdateDegreeProps) {
                   htmlFor="code"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Code
+                  {t("code")}
                 </label>
                 <input
                   type="text"
@@ -480,7 +486,7 @@ export function ModalUpdateDegree(props: ModalUpdateDegreeProps) {
                   htmlFor="code"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Code Ipfs
+                  {t("code")} Ipfs
                 </label>
                 <input
                   type="text"
@@ -503,7 +509,7 @@ export function ModalUpdateDegree(props: ModalUpdateDegreeProps) {
                   htmlFor="status"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Status
+                  {t("status")}
                 </label>
                 <label className="inline-flex items-center me-5 cursor-pointer">
                   <input
@@ -530,7 +536,7 @@ export function ModalUpdateDegree(props: ModalUpdateDegreeProps) {
                 className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 onClick={props.onClose}
               >
-                Close
+                {t("close")}
               </button>
               <button
                 onClick={send}
@@ -538,7 +544,7 @@ export function ModalUpdateDegree(props: ModalUpdateDegreeProps) {
                 type="button"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                Update
+                {t("update")}
               </button>
             </div>
           </div>

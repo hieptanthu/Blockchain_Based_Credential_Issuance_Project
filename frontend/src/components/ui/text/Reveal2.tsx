@@ -1,12 +1,16 @@
 import { motion } from "framer-motion";
-import React from "react";
+import { ReactNode } from "react";
+interface Props {
+  children: string;
+  duration?: number;
+}
 
 // Spliting Text Function
-function splitText(inputString: string): string[] {
-  const characters: string[] = [];
+function splitText(inputString: string) {
+  const characters = [];
   const regex = /[\s\S]/gu;
 
-  let match: RegExpExecArray | null;
+  let match;
 
   while ((match = regex.exec(inputString)) !== null) {
     characters.push(match[0]);
@@ -15,16 +19,11 @@ function splitText(inputString: string): string[] {
   return characters;
 }
 
-interface Reveal2Props {
-  children: string;
-  duration?: number;
-}
-
-const Reveal2: React.FC<Reveal2Props> = ({ children, duration = 0.5 }) => {
+const Reveal2 = ({ children, duration = 0.5 }: Props) => {
   return (
     <motion.div
-      initial="hidden"
-      whileInView="reveal"
+      initial={"hidden"}
+      whileInView={"reveal"}
       transition={{ staggerChildren: 0.02, delayChildren: 1 }}
     >
       {splitText(children).map((char, idx) => (
@@ -34,7 +33,7 @@ const Reveal2: React.FC<Reveal2Props> = ({ children, duration = 0.5 }) => {
             hidden: { opacity: 0 },
             reveal: { opacity: 1 },
           }}
-          transition={{ duration, ease: "easeInOut" }}
+          transition={{ duration: duration, ease: "easeInOut" }}
         >
           {char}
         </motion.span>
@@ -42,5 +41,4 @@ const Reveal2: React.FC<Reveal2Props> = ({ children, duration = 0.5 }) => {
     </motion.div>
   );
 };
-
 export default Reveal2;
